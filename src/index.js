@@ -10,13 +10,13 @@ const app = async () => {
     process.chdir(os.homedir());
     print.currentDirectory(os.homedir());
 
-    await pipeline(process.stdin, cliTransform, process.stdout)
-
     process.on('SIGINT', () => {
         console.log(os.EOL);
         print.sayGoodBay(userName);
         process.exit()
     });
+
+    await pipeline(process.stdin, cliTransform, process.stdout);
 }
 
 app();
