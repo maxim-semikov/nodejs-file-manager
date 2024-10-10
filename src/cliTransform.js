@@ -2,9 +2,10 @@ import os from "node:os";
 import {Transform} from "node:stream";
 import {parsePrompt, print} from "./utils/index.js";
 import {osCommands} from "./commands/index.js";
+import {nwdCommands} from "./commands/nwd.js";
 
 export const cliTransform = new Transform({
-    transform(chunk, _, callback) {
+  async  transform(chunk, _, callback) {
         const {command, args} = parsePrompt(chunk.toString());
 
         if (command === 'os') {
@@ -16,11 +17,15 @@ export const cliTransform = new Transform({
                     this.push(os.EOL);
                 }
             } else {
-                print.error('unavailable Command!');
+                print.error('Invalid input');
             }
-            print.currentDirectory(process.cwd());
         }
 
+        if (nwdCommands[command]) {
+           await nwdCommands[command](args?.[0]);
+        }
+
+        print.currentDirectory(process.cwd());
         callback();
     },
 });
