@@ -2,6 +2,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import {pipeline} from "node:stream/promises";
+import {createBrotliCompress, createBrotliDecompress} from 'zlib';
 import {createReadStream, createWriteStream} from 'node:fs';
 import {checkFileAccess} from "../utils/checkFileAccess.js";
 import {print} from "../utils/index.js";
@@ -52,8 +53,8 @@ const copyFile = async (pathToFile, pathToNewDirectory) => {
         const destinationFolderPath = path.resolve(pathToNewDirectory, fileName);
 
         const isFile = (await fs.stat(sourcePath)).isFile();
-        const isDestinationFolderPathAlreadyExists =await checkFileAccess(destinationFolderPath);
-        const isSourcePathExists =await checkFileAccess(sourcePath);
+        const isDestinationFolderPathAlreadyExists = await checkFileAccess(destinationFolderPath);
+        const isSourcePathExists = await checkFileAccess(sourcePath);
 
         if(isSourcePathExists && isFile && !isDestinationFolderPathAlreadyExists) {
             const readStream = createReadStream(sourcePath);
@@ -101,6 +102,58 @@ const getFileHash = async (pathToFile) => {
     }
 }
 
+const compressFile = async (pathToFile, pathToDestination) => {
+    try {
+        const sourcePath = path.resolve(pathToFile);
+        const fileName = path.basename(sourcePath);
+        const destinationFolderPath = path.resolve(pathToDestination);
+
+        const isSourcePathExists = await checkFileAccess(sourcePath);
+        const isFile =  (await fs.stat(sourcePath)).isFile();
+        const destinationFilePath =  path.join(destinationFolderPath, `${fileName}.br`);
+        const isDestinationPathExists = await checkFileAccess(destinationFilePath);
+
+        if (isSourcePathExists && isFile && !isDestinationPathExists) {
+            await pipeline(
+                createReadStream(sourcePath),
+                createBrotliCompress(),
+                createWriteStream(destinationFilePath)
+            );
+        } else {
+            print.error(MESSAGES.OPERATION_FAILED);
+        }
+    } catch {
+        print.error(MESSAGES.OPERATION_FAILED);
+    }
+}
+
+const decompressFile = async (pathToFile, pathToDestination) => {
+    try {
+        const sourcePath = path.resolve(pathToFile);
+        const fileExt = path.extname(sourcePath);
+        const destinationFileName = path.basename(sourcePath).replace(fileExt, '');
+
+        const destinationPath = path.resolve(pathToDestination);
+        const isSourcePathExists = await checkFileAccess(sourcePath);
+        const isFile =  (await fs.stat(sourcePath)).isFile();
+
+        const destinationFilePath =  path.join(destinationPath, destinationFileName);
+        const isDestinationPathExists = await checkFileAccess(destinationFilePath);
+
+        if (isSourcePathExists && isFile && !isDestinationPathExists && fileExt === '.br') {
+            await pipeline(
+                createReadStream(sourcePath),
+                createBrotliDecompress(),
+                createWriteStream(destinationFilePath)
+            );
+        } else {
+            print.error(MESSAGES.OPERATION_FAILED);
+        }
+    } catch {
+        print.error(MESSAGES.OPERATION_FAILED);
+    }
+}
+
 export const filesCommands = {
     cat: catFile,
     add: addFile,
@@ -108,5 +161,7 @@ export const filesCommands = {
     cp: copyFile,
     rm: deleteFile,
     mv: moveFile,
-    hash: getFileHash
+    hash: getFileHash,
+    compress: compressFile,
+    decompress: decompressFile
 }
