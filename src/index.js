@@ -8,6 +8,7 @@ const app = async () => {
     print.greeting(userName);
 
     process.chdir(os.homedir());
+    console.log('Please type the command. For more info use command "help"');
     print.currentDirectory(os.homedir());
 
     process.on('SIGINT', () => {

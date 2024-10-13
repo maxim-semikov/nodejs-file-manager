@@ -7,7 +7,7 @@ import {createBrotliCompress, createBrotliDecompress} from 'zlib';
 import {createReadStream, createWriteStream} from 'node:fs';
 import {checkFileAccess} from "../utils/checkFileAccess.js";
 import {getUserName, print} from "../utils/index.js";
-import {MESSAGES} from "../consts.js";
+import {HELP, MESSAGES} from "../consts.js";
 
 const catFile = async (pathToFile) => {
     try {
@@ -161,6 +161,14 @@ export const exit = () => {
     process.stdin.pause();
 }
 
+export const printHelp = () => {
+    console.log('Command | Description');
+    console.log('---------------------');
+    HELP.map( item => {
+        print.command(item);
+    })
+}
+
 export const filesCommands = {
     cat: catFile,
     add: addFile,
@@ -171,5 +179,6 @@ export const filesCommands = {
     hash: getFileHash,
     compress: compressFile,
     decompress: decompressFile,
-    '.exit': exit
+    '.exit': exit,
+    help: printHelp
 }

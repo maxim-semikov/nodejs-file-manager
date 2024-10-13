@@ -17,4 +17,5 @@ export const print = {
     sayGoodBay: (userName) =>  console.log(colors.FgYellow+`Thank you for using File Manager,  ${userName}, goodbye!`+colors.Reset),
     currentDirectory: (path) =>  console.log(colors.FgMagenta+`You are currently in: ${path}`+colors.Reset),
     error: (...text) =>  console.log(colors.FgRed+`${text.join('')}`+colors.Reset),
+    command: (item) => console.log(colors.FgYellow+`${item.command}`+colors.Reset+` | ${item.description}`),
 }
