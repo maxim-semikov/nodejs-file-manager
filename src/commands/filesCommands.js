@@ -6,7 +6,7 @@ import {pipeline} from "node:stream/promises";
 import {createBrotliCompress, createBrotliDecompress} from 'zlib';
 import {createReadStream, createWriteStream} from 'node:fs';
 import {checkFileAccess} from "../utils/checkFileAccess.js";
-import {print} from "../utils/index.js";
+import {getUserName, print} from "../utils/index.js";
 import {MESSAGES} from "../consts.js";
 
 const catFile = async (pathToFile) => {
@@ -157,6 +157,7 @@ const decompressFile = async (pathToFile, pathToDestination) => {
 }
 
 export const exit = () => {
+    print.sayGoodBay(getUserName());
     process.stdin.pause();
 }
 
