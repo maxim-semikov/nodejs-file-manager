@@ -1,8 +1,8 @@
 import os from "node:os";
 import {Transform} from "node:stream";
 import {parsePrompt, print} from "./utils/index.js";
-import {osCommands} from "./commands/index.js";
-import {nwdCommands} from "./commands/nwd.js";
+import {filesCommands, nwdCommands, osCommands} from "./commands/index.js";
+import {MESSAGES} from "./consts.js";
 
 export const cliTransform = new Transform({
   async  transform(chunk, _, callback) {
@@ -17,7 +17,7 @@ export const cliTransform = new Transform({
                     this.push(os.EOL);
                 }
             } else {
-                print.error('Invalid input');
+                print.error(MESSAGES.INVALID_INPUT);
             }
         }
 
@@ -25,7 +25,11 @@ export const cliTransform = new Transform({
            await nwdCommands[command](args?.[0]);
         }
 
-        print.currentDirectory(process.cwd());
+      if (filesCommands[command]) {
+          await filesCommands[command](...args);
+      }
+
+      print.currentDirectory(process.cwd());
         callback();
     },
 });
