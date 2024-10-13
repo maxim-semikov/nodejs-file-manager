@@ -1,10 +1,11 @@
 import path from 'node:path';
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
+import {pipeline} from "node:stream/promises";
 import {createReadStream, createWriteStream} from 'node:fs';
 import {checkFileAccess} from "../utils/checkFileAccess.js";
 import {print} from "../utils/index.js";
 import {MESSAGES} from "../consts.js";
-import {pipeline} from "node:stream/promises";
 
 const catFile = async (pathToFile) => {
     try {
@@ -86,11 +87,26 @@ const moveFile = async (pathToFile, pathToNewDirectory) => {
 
 }
 
+const getFileHash = async (pathToFile) => {
+    try {
+        const sourcePath = path.resolve(pathToFile);
+        const hash = crypto.createHash('sha256');
+        const readStream = createReadStream(sourcePath);
+
+        await pipeline(readStream, hash);
+        console.log(hash.digest('hex'));
+    } catch (e) {
+        console.log(e)
+        print.error(print.error(MESSAGES.OPERATION_FAILED));
+    }
+}
+
 export const filesCommands = {
     cat: catFile,
     add: addFile,
     rn: renameFile,
     cp: copyFile,
     rm: deleteFile,
-    mv: moveFile
+    mv: moveFile,
+    hash: getFileHash
 }
