@@ -1,5 +1,6 @@
 import path from 'node:path';
 import crypto from 'node:crypto';
+import os from "node:os";
 import fs from 'node:fs/promises';
 import {pipeline} from "node:stream/promises";
 import {createBrotliCompress, createBrotliDecompress} from 'zlib';
@@ -16,6 +17,7 @@ const catFile = async (pathToFile) => {
 
             // todo: for thinking: may be use cliTransform push
             await readStream.pipe(process.stdout);
+            readStream.on('end', () => os.EOL )
         } else {
             print.error(MESSAGES.OPERATION_FAILED);
         }
@@ -154,6 +156,10 @@ const decompressFile = async (pathToFile, pathToDestination) => {
     }
 }
 
+export const exit = () => {
+    process.stdin.pause();
+}
+
 export const filesCommands = {
     cat: catFile,
     add: addFile,
@@ -163,5 +169,6 @@ export const filesCommands = {
     mv: moveFile,
     hash: getFileHash,
     compress: compressFile,
-    decompress: decompressFile
+    decompress: decompressFile,
+    '.exit': exit
 }
