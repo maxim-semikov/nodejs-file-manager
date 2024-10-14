@@ -159,6 +159,7 @@ const decompressFile = async (pathToFile, pathToDestination) => {
 export const exit = () => {
     print.sayGoodBay(getUserName());
     process.stdin.pause();
+    process.exit();
 }
 
 export const printHelp = () => {
