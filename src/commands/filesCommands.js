@@ -1,7 +1,7 @@
 import path from 'node:path';
 import crypto from 'node:crypto';
-import os from "node:os";
 import fs from 'node:fs/promises';
+import {Writable} from "node:stream";
 import {pipeline} from "node:stream/promises";
 import {createBrotliCompress, createBrotliDecompress} from 'zlib';
 import {createReadStream, createWriteStream} from 'node:fs';
@@ -14,10 +14,15 @@ const catFile = async (pathToFile) => {
         const filePath = path.resolve(pathToFile);
         if(await checkFileAccess(filePath)) {
             const readStream = createReadStream(filePath, { encoding: 'utf8' });
+            const writable = new Writable({
+                decodeStrings: false,
+                write(chunk, encoding, callback) {
+                    console.log(chunk);
+                    callback();
+                }
+            })
 
-            // todo: for thinking: may be use cliTransform push
-            await readStream.pipe(process.stdout);
-            readStream.on('end', () => os.EOL )
+            await pipeline(readStream, writable);
         } else {
             print.error(MESSAGES.OPERATION_FAILED);
         }
