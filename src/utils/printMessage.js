@@ -18,4 +18,6 @@ export const print = {
     currentDirectory: (path) =>  console.log(colors.FgMagenta+`You are currently in: ${path}`+colors.Reset),
     error: (...text) =>  console.log(colors.FgRed+`${text.join('')}`+colors.Reset),
     command: (item) => console.log(colors.FgYellow+`${item.command}`+colors.Reset+` | ${item.description}`),
+    directory: (directoryName) => console.log(colors.FgYellow+`[directory] ${directoryName}`+colors.Reset),
+    fileName: (fileName) => console.log(colors.FgGreen+`[file] ${fileName}`+colors.Reset),
 }
