@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import {print} from "../utils/index.js";
 import {MESSAGES} from "../consts.js";
 
-const goUpper = (args) => {
+const goUpper = (...args) => {
     if (!!args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
@@ -11,7 +11,7 @@ const goUpper = (args) => {
     process.chdir('..');
 };
 
-const goToDirectory = ([pathToDirectory, ...args]) => {
+const goToDirectory = (pathToDirectory, ...args) => {
     if (!pathToDirectory || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
@@ -24,7 +24,7 @@ const goToDirectory = ([pathToDirectory, ...args]) => {
     }
 };
 
-const ls = async (args) => {
+const ls = async (...args) => {
     if (!!args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;

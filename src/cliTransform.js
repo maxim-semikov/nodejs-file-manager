@@ -11,7 +11,7 @@ export const cliTransform = new Transform({
         try {
             if (Commands?.[command]) {
 
-                await Commands[command](args);
+                await Commands[command](...args);
 
                 this.push(os.EOL);
                 print.currentDirectory(process.cwd());

@@ -4,7 +4,7 @@ import {getOsCommands} from "./os.js";
 import {getUserName, print} from "../utils/index.js";
 import {HELP, MESSAGES} from "../consts.js";
 
-export const exit = (args) => {
+export const exit = (...args) => {
     if (!!args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
@@ -14,11 +14,12 @@ export const exit = (args) => {
     process.exit();
 }
 
-export const printHelp = (args) => {
+export const printHelp = (...args) => {
     if (!!args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
+
     console.log('Command | Description');
     console.log('---------------------');
     HELP.map( item => {

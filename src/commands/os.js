@@ -27,9 +27,9 @@ const osCommands = {
     '--architecture': getArchitecture
 }
 
-export const getOsCommands = async ([command, ...args]) => {
-    const isAvailableCommand = osCommands?.[command] && !args?.length;
-    if (isAvailableCommand) {
+export const getOsCommands = async (command, ...args) => {
+    const isAvailableCommand = osCommands?.[command];
+    if (isAvailableCommand && !args?.length) {
         await osCommands[command]();
     } else {
         print.error(MESSAGES.INVALID_INPUT);

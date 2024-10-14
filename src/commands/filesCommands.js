@@ -9,8 +9,8 @@ import {checkFileAccess} from "../utils/checkFileAccess.js";
 import {print} from "../utils/index.js";
 import {MESSAGES} from "../consts.js";
 
-const catFile = async ([pathToFile, ...args]) => {
-    if(!pathToFile || args.length) {
+const catFile = async (pathToFile, ...args) => {
+    if(!pathToFile || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
@@ -36,7 +36,7 @@ const catFile = async ([pathToFile, ...args]) => {
     }
 }
 
-const addFile = async ([fileName, ...args]) => {
+const addFile = async (fileName, ...args) => {
     if(!fileName || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
@@ -49,8 +49,8 @@ const addFile = async ([fileName, ...args]) => {
     }
 }
 
-const renameFile = async ([pathToFile, newFileName, ...args]) => {
-    if(!pathToFile || !newFileName || args.length) {
+const renameFile = async (pathToFile, newFileName, ...args) => {
+    if(!pathToFile || !newFileName || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
@@ -72,8 +72,8 @@ const renameFile = async ([pathToFile, newFileName, ...args]) => {
     }
 }
 
-const copyFile = async ([pathToFile, pathToNewDirectory, ...args]) => {
-    if(!pathToFile || !pathToNewDirectory || args.length) {
+const copyFile = async (pathToFile, pathToNewDirectory, ...args) => {
+    if(!pathToFile || !pathToNewDirectory || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return false;
     }
@@ -102,8 +102,8 @@ const copyFile = async ([pathToFile, pathToNewDirectory, ...args]) => {
     }
 }
 
-const deleteFile = async ([pathToFile, ...args]) => {
-    if(!pathToFile || args.length) {
+const deleteFile = async (pathToFile, ...args) => {
+    if(!pathToFile || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
@@ -116,8 +116,8 @@ const deleteFile = async ([pathToFile, ...args]) => {
     }
 }
 
-const moveFile = async ([pathToFile, pathToNewDirectory, ...args]) => {
-    if(!pathToFile || !pathToNewDirectory || args.length) {
+const moveFile = async (pathToFile, pathToNewDirectory, ...args) => {
+    if(!pathToFile || !pathToNewDirectory || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
@@ -133,8 +133,8 @@ const moveFile = async ([pathToFile, pathToNewDirectory, ...args]) => {
 
 }
 
-const getFileHash = async ([pathToFile, ...args]) => {
-    if(!pathToFile || args.length) {
+const getFileHash = async (pathToFile, ...args) => {
+    if(!pathToFile || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
@@ -151,8 +151,8 @@ const getFileHash = async ([pathToFile, ...args]) => {
     }
 }
 
-const compressFile = async ([pathToFile, pathToDestination, ...args]) => {
-    if(!pathToFile || !pathToDestination || args.length) {
+const compressFile = async (pathToFile, pathToDestination, ...args) => {
+    if(!pathToFile || !pathToDestination || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
@@ -183,8 +183,8 @@ const compressFile = async ([pathToFile, pathToDestination, ...args]) => {
     }
 }
 
-const decompressFile = async ([pathToFile, pathToDestination, ...args]) => {
-    if(!pathToFile || !pathToDestination || args.length) {
+const decompressFile = async (pathToFile, pathToDestination, ...args) => {
+    if(!pathToFile || !pathToDestination || args?.length) {
         print.error(MESSAGES.INVALID_INPUT);
         return;
     }
