@@ -1,21 +1,25 @@
 import os from 'node:os';
+import {print} from "../utils/index.js";
+import {MESSAGES} from "../consts.js";
 
-const getEOL = () => os.EOL.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+const getEOL = () => {
+    console.log(os.EOL.replace(/\n/g, '\\n').replace(/\r/g, '\\r'));
+};
 
 const getCpus = () => {
     const cpus = os.cpus().map(cpu => ({model: cpu.model, speed: `${cpu.speed / 1000} GHz`}));
     console.log('Total amount of CPUS: ', cpus.length);
-    console.table(cpus)
+    console.table(cpus);
 }
 
-const getHomedir = () => os.homedir();
+const getHomedir = () => console.log(os.homedir());
 
-const getSystemUserName = () => process.env.USER || process.env.USERNAME;
+const getSystemUserName = () => console.log(process.env.USER || process.env.USERNAME);
 
-const getArchitecture = () => process.arch;
+const getArchitecture = () => console.log(process.arch);
 
 
-export const osCommands = {
+const osCommands = {
     '--EOL': getEOL,
     '--cpus': getCpus,
     '--homedir': getHomedir,
@@ -23,3 +27,11 @@ export const osCommands = {
     '--architecture': getArchitecture
 }
 
+export const getOsCommands = async ([command, ...args]) => {
+    const isAvailableCommand = osCommands?.[command] && !args?.length;
+    if (isAvailableCommand) {
+        await osCommands[command]();
+    } else {
+        print.error(MESSAGES.INVALID_INPUT);
+    }
+}

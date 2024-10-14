@@ -2,9 +2,21 @@ import fs from 'fs/promises';
 import {print} from "../utils/index.js";
 import {MESSAGES} from "../consts.js";
 
-const goUpper = () => process.chdir('..');
+const goUpper = (args) => {
+    if (!!args?.length) {
+        print.error(MESSAGES.INVALID_INPUT);
+        return;
+    }
 
-const goToDirectory = (pathToDirectory) => {
+    process.chdir('..');
+};
+
+const goToDirectory = ([pathToDirectory, ...args]) => {
+    if (!pathToDirectory || args?.length) {
+        print.error(MESSAGES.INVALID_INPUT);
+        return;
+    }
+
     try {
         process.chdir(pathToDirectory);
     } catch {
@@ -12,7 +24,12 @@ const goToDirectory = (pathToDirectory) => {
     }
 };
 
-const ls = async () => {
+const ls = async (args) => {
+    if (!!args?.length) {
+        print.error(MESSAGES.INVALID_INPUT);
+        return;
+    }
+
     try {
         const files = (await fs.readdir(process.cwd(), { withFileTypes: true }))?.sort((a, b) => {
             if ((a.isDirectory() && b.isDirectory()) || (!a.isDirectory() && !b.isDirectory())) {
