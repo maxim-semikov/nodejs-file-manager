@@ -123,12 +123,12 @@ const moveFile = async (pathToFile, pathToNewDirectory, ...args) => {
     }
 
     try {
-        const isSuccess = await copyFile([pathToFile, pathToNewDirectory]);
+        const isSuccess = await copyFile(pathToFile, pathToNewDirectory);
         if (isSuccess) {
-            await deleteFile([pathToFile]);
+            await deleteFile(pathToFile);
         }
     } catch {
-        print.error(print.error(MESSAGES.OPERATION_FAILED));
+        print.error(MESSAGES.OPERATION_FAILED);
     }
 
 }
