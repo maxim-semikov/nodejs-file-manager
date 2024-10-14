@@ -67,11 +67,14 @@ const copyFile = async (pathToFile, pathToNewDirectory) => {
             const readStream = createReadStream(sourcePath);
             const writeStream = createWriteStream(destinationFolderPath);
             await pipeline(readStream, writeStream);
+            return true;
         } else {
             print.error(MESSAGES.OPERATION_FAILED);
+            return false;
         }
     } catch {
         print.error(MESSAGES.OPERATION_FAILED);
+        return false;
     }
 }
 
@@ -86,9 +89,10 @@ const deleteFile = async (pathToFile) => {
 
 const moveFile = async (pathToFile, pathToNewDirectory) => {
     try {
-        await copyFile(pathToFile, pathToNewDirectory);
-        //todo: return only one message 'Operation failed'
-        await deleteFile(pathToFile);
+        const isSuccess = await copyFile(pathToFile, pathToNewDirectory);
+        if (isSuccess) {
+            await deleteFile(pathToFile);
+        }
     } catch {
         print.error(print.error(MESSAGES.OPERATION_FAILED));
     }
