@@ -24,7 +24,7 @@ const catFile = async ([pathToFile, ...args]) => {
         const readStream = createReadStream(filePath, { encoding: 'utf8' });
         const writable = new Writable({
             decodeStrings: false,
-            write(chunk, encoding, callback) {
+            write(chunk, _, callback) {
                 console.log(chunk);
                 callback();
             }
