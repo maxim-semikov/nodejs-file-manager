@@ -6,8 +6,8 @@ export const MESSAGES = {
 
 export const HELP = [
     {
-        command: 'info',
-        description: 'Print table with all command list',
+        command: 'help',
+        description: 'Print command list',
     },
     {
         command: 'up',
