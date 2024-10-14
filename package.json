@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-file-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "File manager on nodejs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/index.js --username=Ivan"
+  },
+  "keywords": ["nodejs", "file manager"],
+  "author": "Maxim Semikov",
+  "license": "ISC"
+}
